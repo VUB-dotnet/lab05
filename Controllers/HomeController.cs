@@ -6,16 +6,21 @@ namespace RepairShop.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly AppDbContext _context;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(AppDbContext context)
     {
-        _logger = logger;
+        _context = context;
     }
 
     public IActionResult Index()
     {
-        return View();
+        var ticketCounter = new TicketCounter
+        {
+            ActiveCount = _context.Ticket.Count(t => t.Completed == false),
+            CompletedCount = _context.Ticket.Count(t => t.Completed)
+        };
+        return View(ticketCounter);
     }
 
     public IActionResult Privacy()
