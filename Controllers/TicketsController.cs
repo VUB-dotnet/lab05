@@ -29,6 +29,11 @@ namespace RepairShop.Controllers
             return View(await _context.Ticket.Where(t => t.Completed).ToListAsync());
         }
 
+        public async Task<IActionResult> Active()
+        {
+            return View(await _context.Ticket.Where(t => t.Completed == false).ToListAsync());
+        }
+
         // GET: Tickets/Details/5
         public async Task<IActionResult> Details(int? id)
         {
