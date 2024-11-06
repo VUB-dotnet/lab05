@@ -6,27 +6,30 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using RepairShop.Models;
+using RepairShop.Services;
 
 namespace RepairShop.Controllers
 {
     public class TicketsController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly ITicketsService _ticketsService;
 
-        public TicketsController(AppDbContext context)
+        public TicketsController(AppDbContext context, ITicketsService ticketsService)
         {
             _context = context;
+            _ticketsService = ticketsService;
         }
 
         // GET: Tickets
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Ticket.ToListAsync());
+            return View(await _ticketsService.GetTicketsAsync());
         }
 
         public async Task<IActionResult> Completed()
         {
-            return View(await _context.Ticket.Where(t => t.Completed).ToListAsync());
+            return View(await _ticketsService.GetCompletedTicketsAsync());
         }
 
         public async Task<IActionResult> Active()
